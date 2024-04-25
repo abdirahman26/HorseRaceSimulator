@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Race",
+            "request": "launch",
+            "mainClass": "Race",
+            "projectName": "HorseRaceSimulator_65516b64"
+        },
+        {
+            "type": "java",
+            "name": "RaceTest",
+            "request": "launch",
+            "mainClass": "RaceTest",
+            "projectName": "HorseRaceSimulator_65516b64"
+        },
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        }
+    ]
+}

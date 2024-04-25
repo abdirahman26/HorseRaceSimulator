@@ -10,12 +10,32 @@ import java.lang.Math;
  */
 public class Race
 {
+
+        public static void main(String[] args) {
+            // Create a race with a distance of 100 units
+            Race race = new Race(10);
+            
+            // Create three horses and add them to the race lanes
+            Horse horse1 = new Horse('X', "H1", 0.7); // Symbol: '1', Name: H1, Confidence: 0.7
+            Horse horse2 = new Horse('Y', "H2", 0.8); // Symbol: '2', Name: H2, Confidence: 0.8
+            Horse horse3 = new Horse('Z', "H3", 0.9); // Symbol: '3', Name: H3, Confidence: 0.9
+    
+            
+            race.addHorse(horse1, 1); // Add horse1 to lane 1
+            race.addHorse(horse2, 2); // Add horse2 to lane 2
+            race.addHorse(horse3, 3); // Add horse3 to lane 3
+            
+            // Start the race
+            race.startRace();
+        }
+    
+    
     private int raceLength;
     private Horse lane1Horse;
     private Horse lane2Horse;
     private Horse lane3Horse;
 
-    /**
+    /**x
      * Constructor for objects of class Race
      * Initially there are no horses in the lanes
      * 
