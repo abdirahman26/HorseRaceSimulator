@@ -8,7 +8,11 @@
 public class Horse
 {
     //Fields of class Horse
-    
+    private String name;        
+    private char symbol;          
+    private int distance;        
+    private boolean hasFallen;    
+    private double confidence;
     
       
     //Constructor of class Horse
