@@ -18,16 +18,16 @@ public class Race
             Race race = new Race(10);
             
             // Create three horses and add them to the race lanes
-            // Horse horse1 = new Horse('♞', "H1", 0.3); // Symbol: '1', Name: H1, Confidence: 0.7
-            // Horse horse2 = new Horse('♘', "H2", 0.2); // Symbol: '2', Name: H2, Confidence: 0.8
-            // Horse horse3 = new Horse('Z', "H3", 0.9); // Symbol: '3', Name: H3, Confidence: 0.9
+            Horse horse1 = new Horse('♞', "H1", 0.3); // Symbol: '1', Name: H1, Confidence: 0.7
+            Horse horse2 = new Horse('♘', "H2", 0.2); // Symbol: '2', Name: H2, Confidence: 0.8
+            Horse horse3 = new Horse('Z', "H3", 0.9); // Symbol: '3', Name: H3, Confidence: 0.9
     
             
-            // race.addHorse(horse1, 1); // Add horse1 to lane 1
-            // race.addHorse(horse2, 2); // Add horse2 to lane 2
-            // race.addHorse(horse3, 3); // Add horse3 to lane 3
-            // race.addHorse(horse3, 1); // Add horse3 to lane 4 (should fail)
-            // race.addHorse(horse2, 4); // Add horse2 to lane 4 (should fail)
+            race.addHorse(horse1, 1); // Add horse1 to lane 1
+            race.addHorse(horse2, 2); // Add horse2 to lane 2
+            race.addHorse(horse3, 3); // Add horse3 to lane 3
+            race.addHorse(horse3, 1); // Add horse3 to lane 4 (should fail)
+            race.addHorse(horse2, 4); // Add horse2 to lane 4 (should fail)
 
     
             
