@@ -114,6 +114,9 @@ public class Race
             if (winner != null) {
                 finished = true;
                 System.out.println("The race is finished! The winner is " + winner.getName() + "!");
+            } else if(allHorsesDown()) {
+                finished = true;
+                System.out.println("All horses have fallen");
             }
 
 
@@ -123,6 +126,11 @@ public class Race
                 TimeUnit.MILLISECONDS.sleep(100);
             }catch(Exception e){}
         }
+    }
+
+    // Helper method to check if all horses have fallen
+    private boolean allHorsesDown() {
+        return (lane1Horse.hasFallen() && lane2Horse.hasFallen() && lane3Horse.hasFallen());
     }
     
     /**
