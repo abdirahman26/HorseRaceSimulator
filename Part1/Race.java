@@ -103,11 +103,21 @@ public class Race
             printRace();
             
             //if any of the three horses has won the race is finished
-            if ( raceWonBy(lane1Horse) || raceWonBy(lane2Horse) || raceWonBy(lane3Horse) )
-            {
-                finished = true;
-            }
+            // if ( raceWonBy(lane1Horse) || raceWonBy(lane2Horse) || raceWonBy(lane3Horse) )
+            // {
+            //     finished = true;
+            // }
            
+
+            // Check for a winner
+            Horse winner = raceWonBy();
+            if (winner != null) {
+                finished = true;
+                System.out.println("The race is finished! The winner is " + winner.getName() + "!");
+            }
+
+
+
             //wait for 100 milliseconds
             try{ 
                 TimeUnit.MILLISECONDS.sleep(100);
@@ -151,17 +161,29 @@ public class Race
      * @param theHorse The horse we are testing
      * @return true if the horse has won, false otherwise.
      */
-    private boolean raceWonBy(Horse theHorse)
-    {
-        if (theHorse.getDistanceTravelled() == raceLength)
-        {
-            return true;
+    // private boolean raceWonBy(Horse theHorse)
+    // {
+    //     if (theHorse.getDistanceTravelled() == raceLength)
+    //     {
+    //         return true;
+    //     }
+    //     else
+    //     {
+    //         return false;
+    //     }
+    // }
+
+    private Horse raceWonBy() {
+        if (lane1Horse != null && lane1Horse.getDistanceTravelled() >= raceLength) {
+            return lane1Horse;
+        } else if (lane2Horse != null && lane2Horse.getDistanceTravelled() >= raceLength) {
+            return lane2Horse;
+        } else if (lane3Horse != null && lane3Horse.getDistanceTravelled() >= raceLength) {
+            return lane3Horse;
         }
-        else
-        {
-            return false;
-        }
+        return null; // No winner yet
     }
+    
     
     /***
      * Print the race on the terminal
@@ -241,4 +263,5 @@ public class Race
             i = i + 1;
         }
     }
+
 }
