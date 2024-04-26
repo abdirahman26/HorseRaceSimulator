@@ -1,6 +1,7 @@
 import java.util.concurrent.TimeUnit;
 import java.lang.Math;
-
+import java.util.ArrayList;
+import java.util.List;
 /**
  * A three-horse race, each horse running in its own lane
  * for a given distance
@@ -12,6 +13,7 @@ public class Race
 {
 
         public static void main(String[] args) {
+           
             // Create a race with a distance of 100 units
             Race race = new Race(10);
             
@@ -24,9 +26,14 @@ public class Race
             race.addHorse(horse1, 1); // Add horse1 to lane 1
             race.addHorse(horse2, 2); // Add horse2 to lane 2
             race.addHorse(horse3, 3); // Add horse3 to lane 3
+            race.addHorse(horse3, 1); // Add horse3 to lane 4 (should fail)
+            race.addHorse(horse2, 4); // Add horse2 to lane 4 (should fail)
+
+    
             
             // Start the race
             race.startRace();
+        
         }
     
     
@@ -56,25 +63,37 @@ public class Race
      * @param theHorse the horse to be added to the race
      * @param laneNumber the lane that the horse will be added to
      */
-    public void addHorse(Horse theHorse, int laneNumber)
-    {
-        if (laneNumber == 1)
-        {
-            lane1Horse = theHorse;
-        }
-        else if (laneNumber == 2)
-        {
-            lane2Horse = theHorse;
-        }
-        else if (laneNumber == 3)
-        {
-            lane3Horse = theHorse;
-        }
-        else
-        {
-            System.out.println("Cannot add horse to lane " + laneNumber + " because there is no such lane");
+
+    public void addHorse(Horse theHorse, int laneNumber) {
+        
+        switch (laneNumber) {
+            case 1:
+                if (lane1Horse != null) {
+                    System.out.println("Lane 1 is already occupied.");
+                } else {
+                    lane1Horse = theHorse;
+                }
+                break;
+            case 2:
+                if (lane2Horse != null) {
+                    System.out.println("Lane 2 is already occupied.");
+                } else {
+                    lane2Horse = theHorse;
+                }
+                break;
+            case 3:
+                if (lane3Horse != null) {
+                    System.out.println("Lane 3 is already occupied.");
+                } else {
+                    lane3Horse = theHorse;
+                }
+                break;
+            default:
+                System.out.println("Cannot add horse to lane " + laneNumber + " because there is no such lane.");
+                break;
         }
     }
+    
     
     /**
      * Start the race
@@ -102,22 +121,32 @@ public class Race
             //print the race positions
             printRace();
             
-            //if any of the three horses has won the race is finished
-            // if ( raceWonBy(lane1Horse) || raceWonBy(lane2Horse) || raceWonBy(lane3Horse) )
-            // {
-            //     finished = true;
-            // }
-           
-
             // Check for a winner
-            Horse winner = raceWonBy();
-            if (winner != null) {
+            // Horse winner = raceWonBy();
+            // if (winner != null) {
+            //     finished = true;
+            //     System.out.println("The race is finished! The winner is " + winner.getName() + "!");
+            // } else if(allHorsesDown()) {
+            //     finished = true;
+            //     System.out.println("All horses have fallen");
+            // }
+
+            List<Horse> winners = raceWonBy();
+            if (!winners.isEmpty()) {
                 finished = true;
-                System.out.println("The race is finished! The winner is " + winner.getName() + "!");
-            } else if(allHorsesDown()) {
+                if (winners.size() > 1) {
+                    System.out.println("The race is finished with a tie!");
+                    for (Horse winner : winners) {
+                        System.out.println("Winner: " + winner.getName());
+                    }
+                } else {
+                    System.out.println("The race is finished! The winner is " + winners.get(0).getName() + "!");
+                }
+            } else if (allHorsesDown()) {
                 finished = true;
                 System.out.println("All horses have fallen");
             }
+    
 
 
 
@@ -181,15 +210,29 @@ public class Race
     //     }
     // }
 
-    private Horse raceWonBy() {
+    // private Horse raceWonBy() {
+    //     if (lane1Horse != null && lane1Horse.getDistanceTravelled() >= raceLength) {
+    //         return lane1Horse;
+    //     } else if (lane2Horse != null && lane2Horse.getDistanceTravelled() >= raceLength) {
+    //         return lane2Horse;
+    //     } else if (lane3Horse != null && lane3Horse.getDistanceTravelled() >= raceLength) {
+    //         return lane3Horse;
+    //     }
+    //     return null; // No winner yet
+    // }
+
+    private List<Horse> raceWonBy() {
+        List<Horse> winners = new ArrayList<>();
         if (lane1Horse != null && lane1Horse.getDistanceTravelled() >= raceLength) {
-            return lane1Horse;
-        } else if (lane2Horse != null && lane2Horse.getDistanceTravelled() >= raceLength) {
-            return lane2Horse;
-        } else if (lane3Horse != null && lane3Horse.getDistanceTravelled() >= raceLength) {
-            return lane3Horse;
+            winners.add(lane1Horse);
         }
-        return null; // No winner yet
+        if (lane2Horse != null && lane2Horse.getDistanceTravelled() >= raceLength) {
+            winners.add(lane2Horse);
+        }
+        if (lane3Horse != null && lane3Horse.getDistanceTravelled() >= raceLength) {
+            winners.add(lane3Horse);
+        }
+        return winners; // Return list of winners
     }
     
     
@@ -199,8 +242,6 @@ public class Race
     private void printRace()
     {
         System.out.print('\u000C');  //clear the terminal window
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
         
         multiplePrint('=',raceLength+3); //top edge of track
         System.out.println();
@@ -215,7 +256,9 @@ public class Race
         System.out.println();
         
         multiplePrint('=',raceLength+3); //bottom edge of track
-        System.out.println();    
+        System.out.println();  
+        
+       
     }
     
     /**
@@ -253,6 +296,9 @@ public class Race
         
         //print the | for the end of the track
         System.out.print('|');
+
+         // Print the confidence next to the horse lane
+         System.out.printf(" %s (Confidence: %.2f)", theHorse.getName(), theHorse.getConfidence());
     }
         
     

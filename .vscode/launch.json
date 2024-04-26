@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "test",
+            "request": "launch",
+            "mainClass": "test",
+            "projectName": "HorseRaceSimulator_65516b64"
+        },
+        {
+            "type": "java",
             "name": "Race",
             "request": "launch",
             "mainClass": "Race",
