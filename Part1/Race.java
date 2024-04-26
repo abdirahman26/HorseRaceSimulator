@@ -18,16 +18,16 @@ public class Race
             Race race = new Race(10);
             
             // Create three horses and add them to the race lanes
-            Horse horse1 = new Horse('X', "H1", 0.7); // Symbol: '1', Name: H1, Confidence: 0.7
-            Horse horse2 = new Horse('Y', "H2", 0.8); // Symbol: '2', Name: H2, Confidence: 0.8
-            Horse horse3 = new Horse('Z', "H3", 0.9); // Symbol: '3', Name: H3, Confidence: 0.9
+            // Horse horse1 = new Horse('♞', "H1", 0.3); // Symbol: '1', Name: H1, Confidence: 0.7
+            // Horse horse2 = new Horse('♘', "H2", 0.2); // Symbol: '2', Name: H2, Confidence: 0.8
+            // Horse horse3 = new Horse('Z', "H3", 0.9); // Symbol: '3', Name: H3, Confidence: 0.9
     
             
-            race.addHorse(horse1, 1); // Add horse1 to lane 1
-            race.addHorse(horse2, 2); // Add horse2 to lane 2
-            race.addHorse(horse3, 3); // Add horse3 to lane 3
-            race.addHorse(horse3, 1); // Add horse3 to lane 4 (should fail)
-            race.addHorse(horse2, 4); // Add horse2 to lane 4 (should fail)
+            // race.addHorse(horse1, 1); // Add horse1 to lane 1
+            // race.addHorse(horse2, 2); // Add horse2 to lane 2
+            // race.addHorse(horse3, 3); // Add horse3 to lane 3
+            // race.addHorse(horse3, 1); // Add horse3 to lane 4 (should fail)
+            // race.addHorse(horse2, 4); // Add horse2 to lane 4 (should fail)
 
     
             
@@ -103,6 +103,12 @@ public class Race
      */
     public void startRace()
     {
+        // Check if all lanes are empty
+        if (lane1Horse == null && lane2Horse == null && lane3Horse == null) {
+        System.out.println("No horses have been added to the race. Race cannot start.");
+        return;  // Exit the method early if no horses are present
+    }
+        
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
         
@@ -169,28 +175,36 @@ public class Race
      * 
      * @param theHorse the horse to be moved
      */
+
     private void moveHorse(Horse theHorse)
     {
-        //if the horse has fallen it cannot move, 
-        //so only run if it has not fallen
-        
-        if  (!theHorse.hasFallen())
+        // if the horse has fallen it cannot move, 
+        // so only run if it has not fallen
+        if (!theHorse.hasFallen())
         {
-            //the probability that the horse will move forward depends on the confidence;
+            // the probability that the horse will move forward depends on the confidence;
             if (Math.random() < theHorse.getConfidence())
             {
-               theHorse.moveForward();
+                theHorse.moveForward();
+                // Increase confidence by 0.05 and ensure it does not exceed 1
+                double newConfidence = Math.min(theHorse.getConfidence() + 0.1, 1.0);
+                theHorse.setConfidence(newConfidence);
             }
-            
-            //the probability that the horse will fall is very small (max is 0.1)
-            //but will also will depends exponentially on confidence 
-            //so if you double the confidence, the probability that it will fall is *2
-            if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
+    
+            // the probability that the horse will fall is very small (max is 0.1)
+            // but will also depend exponentially on confidence 
+            // so if you double the confidence, the probability that it will fall is *2
+            if (Math.random() < (0.1 * theHorse.getConfidence() * theHorse.getConfidence()))
             {
                 theHorse.fall();
+                // Decrease confidence by 0.05 and ensure it does not go below 0
+                double newConfidence = Math.max(theHorse.getConfidence() - 0.1, 0.0);
+                theHorse.setConfidence(newConfidence);
             }
         }
     }
+    
+
         
     /** 
      * Determines if a horse has won the race
@@ -198,28 +212,6 @@ public class Race
      * @param theHorse The horse we are testing
      * @return true if the horse has won, false otherwise.
      */
-    // private boolean raceWonBy(Horse theHorse)
-    // {
-    //     if (theHorse.getDistanceTravelled() == raceLength)
-    //     {
-    //         return true;
-    //     }
-    //     else
-    //     {
-    //         return false;
-    //     }
-    // }
-
-    // private Horse raceWonBy() {
-    //     if (lane1Horse != null && lane1Horse.getDistanceTravelled() >= raceLength) {
-    //         return lane1Horse;
-    //     } else if (lane2Horse != null && lane2Horse.getDistanceTravelled() >= raceLength) {
-    //         return lane2Horse;
-    //     } else if (lane3Horse != null && lane3Horse.getDistanceTravelled() >= raceLength) {
-    //         return lane3Horse;
-    //     }
-    //     return null; // No winner yet
-    // }
 
     private List<Horse> raceWonBy() {
         List<Horse> winners = new ArrayList<>();
@@ -284,7 +276,7 @@ public class Race
         //else print the horse's symbol
         if(theHorse.hasFallen())
         {
-            System.out.print('\u2322');
+            System.out.print('❌');
         }
         else
         {
